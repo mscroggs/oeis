@@ -12,6 +12,11 @@ def compute(n, filled=[], best=None):
     if len(filled) >= best:
         return best
 
+    # Skip some solutions that are the same but with x and y flipped
+    if (0, 1) in filled and (1, 0) not in filled:
+        return best
+
+    # Skip solutions with inefficient placement around edges
     if n > 2:
         for i in range(n):
             if (0, i) in filled and (1, i) not in filled:
@@ -23,13 +28,13 @@ def compute(n, filled=[], best=None):
             if (i, n - 1) in filled and (i, n - 2) not in filled:
                 return best
 
+    # Skip solutions where pieces placed so far leave too much to do
     needed = 0
     for i in range(1, n, 3):
         for j in range(1, n, 3):
             needed += max(0, 2 - len([p for p in filled if adjacent(p, (i, j))]))
     if len(filled) + needed >= best:
         return best
-
     needed = 0
     for i in range(2, n, 3):
         for j in range(2, n, 3):
@@ -37,6 +42,7 @@ def compute(n, filled=[], best=None):
     if len(filled) + needed >= best:
         return best
 
+    # Put two pieces next to (3a, 3b) for all a, b
     for i in range(0, n, 3):
         for j in range(0, n, 3):
             if len([p for p in filled if adjacent(p, (i, j))]) == 0:
@@ -57,6 +63,7 @@ def compute(n, filled=[], best=None):
                                 ))
                 return best
 
+    # Put a piece next to anywhere that has less than two pieces next to it
     for i in range(n):
         for j in range(n):
             xr = (max(0, i - 1), min(n, i + 2))
