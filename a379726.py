@@ -93,4 +93,4 @@ for n in range(2, 15):
         term = compute(n, best=2 * (n//3)**2 + n//3)
         print(f"{n} {term}")
     else:
-        print(f"{n} {2 * (n//3)**2}")
+        print(f"{n} {2 * ((n+2)//3)**2}")
