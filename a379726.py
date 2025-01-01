@@ -1,22 +1,8 @@
+"""Python code to compute A379726."""
+
+
 def adjacent(a, b):
     return abs(a[0] - b[0]) <= 1 and abs(a[1] - b[1]) <= 1
-
-
-def complete(n, filled):
-    for i in range(n):
-        for j in range(n):
-            if len([c for c in filled if adjacent(c, (i, j))]) < 2:
-                return False
-    return True
-
-
-def incomplete(n, filled):
-    out = []
-    for i in range(n):
-        for j in range(n):
-            if len([c for c in filled if adjacent(c, (i, j))]) < 2:
-                out.append((i, j))
-    return out
 
 
 def compute(n, filled=[], best=None):
@@ -56,6 +42,7 @@ def compute(n, filled=[], best=None):
                                     n, filled + [(x, y), (x2, y2)], best
                                 ))
                 return best
+
     for i in range(n):
         for j in range(n):
             xr = (max(0, i - 1), min(n, i + 2))
