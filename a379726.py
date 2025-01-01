@@ -9,6 +9,9 @@ def compute(n, filled=[], best=None):
     if best is None:
         best = n ** 2
 
+    if len(filled) >= best:
+        return best
+
     if n > 2:
         for i in range(n):
             if (0, i) in filled and (1, i) not in filled:
@@ -20,7 +23,18 @@ def compute(n, filled=[], best=None):
             if (i, n - 1) in filled and (i, n - 2) not in filled:
                 return best
 
-    if len(filled) >= best:
+    needed = 0
+    for i in range(1, n, 3):
+        for j in range(1, n, 3):
+            needed += max(0, 2 - len([p for p in filled if adjacent(p, (i, j))]))
+    if len(filled) + needed >= best:
+        return best
+
+    needed = 0
+    for i in range(2, n, 3):
+        for j in range(2, n, 3):
+            needed += max(0, 2 - len([p for p in filled if adjacent(p, (i, j))]))
+    if len(filled) + needed >= best:
         return best
 
     for i in range(0, n, 3):
@@ -67,7 +81,7 @@ assert compute(3) == 3
 print("Checking 4")
 assert compute(4) == 8
 
-for n in range(2, 12):
+for n in range(2, 15):
     if n % 3 == 0:
         term = compute(n, best=2 * (n//3)**2 + n//3)
         print(f"{n} {term}")
